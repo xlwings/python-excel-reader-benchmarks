@@ -1,0 +1,5 @@
+xlwings
+openpyxl
+pyxlsb
+xlrd
+psutil

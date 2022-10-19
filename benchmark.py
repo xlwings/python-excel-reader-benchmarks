@@ -1,4 +1,5 @@
 import itertools
+import numbers
 import os
 import platform
 import sys
@@ -8,9 +9,8 @@ import openpyxl
 import psutil
 import pyxlsb
 import xlrd
-from psutil._common import bytes2human
-
 import xlwings as xw
+from psutil._common import bytes2human
 from xlwings.utils import a1_to_tuples
 
 
@@ -98,8 +98,14 @@ def compare(func_one, func_two):
     # Align data
     if not isinstance(one, list):
         two = two[0][0]
+        two = None if two == "" else two
     else:
         two = [list(row) for row in two]
+        two = [[None if cell == "" else cell for cell in row] for row in two]
+        two = [
+            [float(cell) if isinstance(cell, numbers.Number) else cell for cell in row]
+            for row in two
+        ]
 
     if one == two:
         return
@@ -132,7 +138,7 @@ def main(func_one, func_two, repeat, loops):
     print(" " * 80)
     print(f"{module_one_name}: {time_one:.3f}s")
     print(f"{module_two_name}: {time_two:.3f}s")
-    print(f"{module_one_name} vs. {module_two_name}: {speedup:.1f}x")
+    print(f"Speedup {module_one_name} vs. {module_two_name}: {speedup:.1f}x")
     print("=" * 80)
     print()
 

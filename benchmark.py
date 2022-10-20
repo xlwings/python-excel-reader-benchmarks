@@ -4,8 +4,10 @@ import os
 import platform
 import sys
 import timeit
+from pathlib import Path
 
 import openpyxl
+import pandas as pd
 import psutil
 import pyxlsb
 import xlrd
@@ -23,6 +25,31 @@ def xlwings_get_sheet_values():
 def xlwings_get_range_values():
     with xw.Book(TEST_FILE, mode="r") as book:
         return book.sheets[SHEET][ADDRESS].value
+
+
+def xlwings_get_sheet_df():
+    with xw.Book(TEST_FILE, mode="r") as book:
+        return book.sheets[SHEET].cells.options("df", index=False).value
+
+
+def xlwings_get_range_df():
+    with xw.Book(TEST_FILE, mode="r") as book:
+        return book.sheets[SHEET][ADDRESS].options("df", index=False).value
+
+
+# pandas
+def pandas_get_sheet_df():
+    return pd.read_excel(TEST_FILE, sheet_name=SHEET)
+
+
+def pandas_get_range_df():
+    return pd.read_excel(
+        TEST_FILE,
+        sheet_name=SHEET,
+        usecols=list(range(COL1 - 1, COL2)),
+        skiprows=ROW1 - 1,
+        nrows=ROW2 - ROW1,
+    )
 
 
 # openpyxl
@@ -95,18 +122,33 @@ def compare(func_one, func_two):
     if isinstance(one, list) and not isinstance(one[0], list):
         raise Exception("Only single cells or 2d ranges are supported for address!")
 
-    # Align data
+    # DataFrame
+    if isinstance(one, pd.DataFrame):
+        # Align data
+        for col in two.columns:
+            if two[col].dtype == int:
+                two[col] = two[col].astype(float)
+        # Compare
+        if one.equals(two):
+            return
+        else:
+            print(two[~two.isin(one)].dropna())
+            raise Exception("Values differ, see diff above.")
+
+    # Single cells
     if not isinstance(one, list):
         two = two[0][0]
         two = None if two == "" else two
     else:
+        # Lists of lists/tuples
+        # Align Data
         two = [list(row) for row in two]
         two = [[None if cell == "" else cell for cell in row] for row in two]
         two = [
             [float(cell) if isinstance(cell, numbers.Number) else cell for cell in row]
             for row in two
         ]
-
+    # Compare
     if one == two:
         return
     else:
@@ -123,8 +165,6 @@ def compare(func_one, func_two):
 def main(func_one, func_two, repeat, loops, description=None):
     module_one_name = func_one.__name__.split("_")[0]
     module_two_name = func_two.__name__.split("_")[0]
-    # print(repeat, loops)
-    # print(timeit.repeat(func_one, repeat=repeat, number=loops))
     time_one = min(timeit.repeat(func_one, repeat=repeat, number=loops)) / loops
     time_two = min(timeit.repeat(func_two, repeat=repeat, number=loops)) / loops
 
@@ -132,7 +172,11 @@ def main(func_one, func_two, repeat, loops, description=None):
     speedup = time_two / time_one
 
     print("=" * 80)
-    print(description if description else "(no description)")
+    print(
+        f"{description} [{Path(TEST_FILE).suffix[1:]}]"
+        if description
+        else f"(no description) [{Path(TEST_FILE).suffix[1:]}]"
+    )
     print("=" * 80)
     print(f"{func_one.__name__} vs. {func_two.__name__}")
     print(
@@ -161,6 +205,46 @@ if __name__ == "__main__":
     print()
 
     test_cases = (
+        {
+            "description": "pandas sheet (10.5k rows)",
+            "file": "xl/AAPL.xlsx",
+            "sheet": 0,
+            "address": "",
+            "repeat": 5,
+            "loops": 1,
+            "one": xlwings_get_sheet_df,
+            "two": pandas_get_sheet_df,
+        },
+        {
+            "description": "pandas sheet (10.5k rows)",
+            "file": "xl/AAPL.xlsb",
+            "sheet": 0,
+            "address": "",
+            "repeat": 5,
+            "loops": 1,
+            "one": xlwings_get_sheet_df,
+            "two": pandas_get_sheet_df,
+        },
+        {
+            "description": "pandas top 10 rows from 10.k rows",
+            "file": "xl/AAPL.xlsx",
+            "sheet": 0,
+            "address": "A1:G10",
+            "repeat": 5,
+            "loops": 1,
+            "one": xlwings_get_range_df,
+            "two": pandas_get_range_df,
+        },
+        {
+            "description": "pandas top 10 rows from 10.k rows",
+            "file": "xl/AAPL.xlsb",
+            "sheet": 0,
+            "address": "A1:G10",
+            "repeat": 5,
+            "loops": 1,
+            "one": xlwings_get_range_df,
+            "two": pandas_get_range_df,
+        },
         {
             "description": "Read sheet (10.5k rows)",
             "file": "xl/AAPL.xls",
@@ -294,4 +378,10 @@ if __name__ == "__main__":
             ROW1, COL1 = cell1[0], cell1[1]
             ROW2, COL2 = cell2[0], cell2[1]
 
-        main(test["one"], test["two"], repeat=test["repeat"], loops=test["loops"], description=test.get("description"))
+        main(
+            test["one"],
+            test["two"],
+            repeat=test["repeat"],
+            loops=test["loops"],
+            description=test.get("description"),
+        )

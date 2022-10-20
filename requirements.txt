@@ -1,5 +1,6 @@
-xlwings
 openpyxl
+pandas
+psutil
 pyxlsb
 xlrd
-psutil
+xlwings

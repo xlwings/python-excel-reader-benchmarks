@@ -17,12 +17,12 @@ from xlwings.utils import a1_to_tuples
 # xlwings
 def xlwings_get_sheet_values():
     with xw.Book(TEST_FILE, mode="r") as book:
-        return book.sheets[0].cells.value
+        return book.sheets[SHEET].cells.value
 
 
 def xlwings_get_range_values():
     with xw.Book(TEST_FILE, mode="r") as book:
-        return book.sheets[0][ADDRESS].value
+        return book.sheets[SHEET][ADDRESS].value
 
 
 # openpyxl
@@ -30,7 +30,7 @@ def openpyxl_get_sheet_values():
     book = openpyxl.load_workbook(
         TEST_FILE, read_only=True, keep_links=False, data_only=True
     )
-    sheet = book.worksheets[0]
+    sheet = book.worksheets[SHEET]
     values = []
     for row in sheet.iter_rows(values_only=True):
         values.append(row)
@@ -41,7 +41,7 @@ def openpyxl_get_range_values():
     book = openpyxl.load_workbook(
         TEST_FILE, read_only=True, keep_links=False, data_only=True
     )
-    sheet = book.worksheets[0]
+    sheet = book.worksheets[SHEET]
     values = []
     for row in sheet.iter_rows(
         min_row=ROW1, max_row=ROW2, min_col=COL1, max_col=COL2, values_only=True
@@ -54,7 +54,7 @@ def openpyxl_get_range_values():
 def pyxlsb_get_sheet_values():
     values = []
     with pyxlsb.open_workbook(TEST_FILE) as book:
-        with book.get_sheet(1) as sheet:
+        with book.get_sheet(SHEET + 1) as sheet:
             for row in sheet.rows():
                 values.append([cell.v for cell in row])
     return values
@@ -63,7 +63,7 @@ def pyxlsb_get_sheet_values():
 def pyxlsb_get_range_values():
     values = []
     with pyxlsb.open_workbook(TEST_FILE) as book:
-        with book.get_sheet(1) as sheet:
+        with book.get_sheet(SHEET + 1) as sheet:
             for row in itertools.islice(sheet.rows(), ROW1 - 1, ROW2):
                 values.append([cell.v for cell in row][COL1 - 1 : COL2])
     return values
@@ -72,13 +72,13 @@ def pyxlsb_get_range_values():
 # xlrd
 def xlrd_get_sheet_values():
     with xlrd.open_workbook(TEST_FILE, on_demand=True) as book:
-        sheet = book.sheet_by_index(0)
+        sheet = book.sheet_by_index(SHEET)
         return [sheet.row_values(row) for row in range(sheet.nrows)]
 
 
 def xlrd_get_range_values():
     with xlrd.open_workbook(TEST_FILE, on_demand=True) as book:
-        sheet = book.sheet_by_index(0)
+        sheet = book.sheet_by_index(SHEET)
         return [
             sheet.row_values(row, start_colx=COL1 - 1, end_colx=COL2)
             for row in range(ROW1 - 1, ROW2)
@@ -132,7 +132,7 @@ def main(func_one, func_two, repeat, loops):
     print("=" * 80)
     print(f"{func_one.__name__} vs. {func_two.__name__}")
     print(
-        f"File: {TEST_FILE}, Address: {ADDRESS if ADDRESS else '-'}, "
+        f"File: {TEST_FILE}, Sheet: {SHEET}, Address: {ADDRESS if ADDRESS else 'full sheet'}, "
         f"Repeat: {repeat}, Loops: {loops}"
     )
     print(" " * 80)
@@ -159,6 +159,7 @@ if __name__ == "__main__":
     test_cases = (
         {
             "file": "AAPL.xls",
+            "sheet": 0,
             "address": "",
             "repeat": 5,
             "loops": 1,
@@ -167,6 +168,7 @@ if __name__ == "__main__":
         },
         {
             "file": "AAPL.xlsx",
+            "sheet": 0,
             "address": "",
             "repeat": 5,
             "loops": 1,
@@ -175,6 +177,7 @@ if __name__ == "__main__":
         },
         {
             "file": "AAPL.xlsb",
+            "sheet": 0,
             "address": "",
             "repeat": 5,
             "loops": 1,
@@ -185,6 +188,7 @@ if __name__ == "__main__":
 
     for test in test_cases:
         TEST_FILE = test["file"]
+        SHEET = test["sheet"]
         ADDRESS = test.get("address")
         if ADDRESS:
             cell1, cell2 = a1_to_tuples(ADDRESS)  # 1-based

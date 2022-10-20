@@ -120,15 +120,19 @@ def compare(func_one, func_two):
         raise Exception("Values differ, see diff above.")
 
 
-def main(func_one, func_two, repeat, loops):
+def main(func_one, func_two, repeat, loops, description=None):
     module_one_name = func_one.__name__.split("_")[0]
     module_two_name = func_two.__name__.split("_")[0]
-    time_one = min(timeit.repeat(func_one, repeat=repeat, number=loops))
-    time_two = min(timeit.repeat(func_two, repeat=repeat, number=loops))
+    # print(repeat, loops)
+    # print(timeit.repeat(func_one, repeat=repeat, number=loops))
+    time_one = min(timeit.repeat(func_one, repeat=repeat, number=loops)) / loops
+    time_two = min(timeit.repeat(func_two, repeat=repeat, number=loops)) / loops
 
     compare(func_one, func_two)
     speedup = time_two / time_one
 
+    print("=" * 80)
+    print(description if description else "(no description)")
     print("=" * 80)
     print(f"{func_one.__name__} vs. {func_two.__name__}")
     print(
@@ -158,6 +162,7 @@ if __name__ == "__main__":
 
     test_cases = (
         {
+            "description": "Read sheet (10.5k rows)",
             "file": "AAPL.xls",
             "sheet": 0,
             "address": "",
@@ -167,6 +172,7 @@ if __name__ == "__main__":
             "two": xlrd_get_sheet_values,
         },
         {
+            "description": "Read sheet (10.5k rows)",
             "file": "AAPL.xlsx",
             "sheet": 0,
             "address": "",
@@ -176,11 +182,102 @@ if __name__ == "__main__":
             "two": openpyxl_get_sheet_values,
         },
         {
+            "description": "Read sheet (10.5k rows)",
             "file": "AAPL.xlsb",
             "sheet": 0,
             "address": "",
             "repeat": 5,
-            "loops": 1,
+            "loops": 10,
+            "one": xlwings_get_sheet_values,
+            "two": pyxlsb_get_sheet_values,
+        },
+        {
+            "description": "Read cell at top of 10.5k rows",
+            "file": "AAPL.xls",
+            "sheet": 0,
+            "address": "A1",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_range_values,
+            "two": xlrd_get_range_values,
+        },
+        {
+            "description": "Read cell at top of 10.5k rows",
+            "file": "AAPL.xlsx",
+            "sheet": 0,
+            "address": "A1",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_range_values,
+            "two": openpyxl_get_range_values,
+        },
+        {
+            "description": "Read cell at top of 10.5k rows",
+            "file": "AAPL.xlsb",
+            "sheet": 0,
+            "address": "A1",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_range_values,
+            "two": pyxlsb_get_range_values,
+        },
+        {
+            "description": "Read cell in row 10,000 of 10.5k rows",
+            "file": "AAPL.xls",
+            "sheet": 0,
+            "address": "D10000",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_range_values,
+            "two": xlrd_get_range_values,
+        },
+        {
+            "description": "Read cell in row 10,000 of 10.5k rows",
+            "file": "AAPL.xlsx",
+            "sheet": 0,
+            "address": "D10000",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_range_values,
+            "two": openpyxl_get_range_values,
+        },
+        {
+            "description": "Read cell in row 10,000 of 10.5k rows [pyxlsb doesn't offer direct cell access]",
+            "file": "AAPL.xlsb",
+            "sheet": 0,
+            "address": "D10000",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_range_values,
+            "two": pyxlsb_get_range_values,
+        },
+        {
+            "description": "Read sheet in small file",
+            "file": "small.xls",
+            "sheet": 0,
+            "address": "",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_sheet_values,
+            "two": xlrd_get_sheet_values,
+        },
+        {
+            "description": "Read sheet in small file",
+            "file": "small.xlsx",
+            "sheet": 0,
+            "address": "",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_sheet_values,
+            "two": openpyxl_get_sheet_values,
+        },
+        {
+            "description": "Read sheet in small file",
+            "file": "small.xlsb",
+            "sheet": 0,
+            "address": "",
+            "repeat": 5,
+            "loops": 10,
             "one": xlwings_get_sheet_values,
             "two": pyxlsb_get_sheet_values,
         },
@@ -197,4 +294,4 @@ if __name__ == "__main__":
             ROW1, COL1 = cell1[0], cell1[1]
             ROW2, COL2 = cell2[0], cell2[1]
 
-        main(test["one"], test["two"], repeat=test["repeat"], loops=test["loops"])
+        main(test["one"], test["two"], repeat=test["repeat"], loops=test["loops"], description=test.get("description"))

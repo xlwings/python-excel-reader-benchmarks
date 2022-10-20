@@ -34,7 +34,7 @@ def xlwings_get_sheet_df():
 
 def xlwings_get_range_df():
     with xw.Book(TEST_FILE, mode="r") as book:
-        return book.sheets[SHEET][ADDRESS].options("df", index=False).value
+        return book.sheets[SHEET][ADDRESS].options("df", index=False, header=False).value
 
 
 # pandas
@@ -48,7 +48,8 @@ def pandas_get_range_df():
         sheet_name=SHEET,
         usecols=list(range(COL1 - 1, COL2)),
         skiprows=ROW1 - 1,
-        nrows=ROW2 - ROW1,
+        nrows=ROW2 - ROW1 + 1,
+        header=None,
     )
 
 
@@ -173,9 +174,9 @@ def main(func_one, func_two, repeat, loops, description=None):
 
     print("=" * 80)
     print(
-        f"{description} [{Path(TEST_FILE).suffix[1:]}]"
+        f"[{Path(TEST_FILE).suffix[1:]}|{module_two_name}] {description}"
         if description
-        else f"(no description) [{Path(TEST_FILE).suffix[1:]}]"
+        else f"[{Path(TEST_FILE).suffix[1:]}|{module_two_name}] (no description)"
     )
     print("=" * 80)
     print(f"{func_one.__name__} vs. {func_two.__name__}")
@@ -197,6 +198,7 @@ if __name__ == "__main__":
     print(f"OpenPyXL: {openpyxl.__version__}")
     print(f"pyxlsb: {pyxlsb.__version__}")
     print(f"xlrd: {xlrd.__version__}")
+    print(f"pandas: {pd.__version__}")
     print()
     print(f"Available Memory: {bytes2human(psutil.virtual_memory().available)}")
     print(f"CPUs: {os.cpu_count()}")
@@ -206,7 +208,7 @@ if __name__ == "__main__":
 
     test_cases = (
         {
-            "description": "pandas: sheet (10.5k rows)",
+            "description": "sheet (10,500 rows)",
             "file": "xl/AAPL.xlsx",
             "sheet": 0,
             "address": "",
@@ -216,17 +218,7 @@ if __name__ == "__main__":
             "two": pandas_get_sheet_df,
         },
         {
-            "description": "pandas: sheet (10.5k rows)",
-            "file": "xl/AAPL.xlsb",
-            "sheet": 0,
-            "address": "",
-            "repeat": 5,
-            "loops": 10,
-            "one": xlwings_get_sheet_df,
-            "two": pandas_get_sheet_df,
-        },
-        {
-            "description": "pandas: top 10 rows from 10.k rows",
+            "description": "top 10 rows from 10.k rows",
             "file": "xl/AAPL.xlsx",
             "sheet": 0,
             "address": "A1:G10",
@@ -236,17 +228,17 @@ if __name__ == "__main__":
             "two": pandas_get_range_df,
         },
         {
-            "description": "pandas: top 10 rows from 10.k rows",
-            "file": "xl/AAPL.xlsb",
+            "description": "bottom 10 rows from 10.k rows",
+            "file": "xl/AAPL.xlsx",
             "sheet": 0,
-            "address": "A1:G10",
+            "address": "A10544:G10553",
             "repeat": 5,
             "loops": 10,
             "one": xlwings_get_range_df,
             "two": pandas_get_range_df,
         },
         {
-            "description": "pandas: small file small df",
+            "description": "small file, small df",
             "file": "xl/small.xlsx",
             "sheet": 0,
             "address": "A1:C3",
@@ -256,27 +248,7 @@ if __name__ == "__main__":
             "two": pandas_get_range_df,
         },
         {
-            "description": "pandas: small file small df",
-            "file": "xl/small.xlsb",
-            "sheet": 0,
-            "address": "A1:C3",
-            "repeat": 5,
-            "loops": 10,
-            "one": xlwings_get_range_df,
-            "two": pandas_get_range_df,
-        },
-        {
-            "description": "Read sheet (10.5k rows)",
-            "file": "xl/AAPL.xls",
-            "sheet": 0,
-            "address": "",
-            "repeat": 5,
-            "loops": 10,
-            "one": xlwings_get_sheet_values,
-            "two": xlrd_get_sheet_values,
-        },
-        {
-            "description": "Read sheet (10.5k rows)",
+            "description": "Read sheet (10,500 rows)",
             "file": "xl/AAPL.xlsx",
             "sheet": 0,
             "address": "",
@@ -286,7 +258,77 @@ if __name__ == "__main__":
             "two": openpyxl_get_sheet_values,
         },
         {
-            "description": "Read sheet (10.5k rows)",
+            "description": "Read cell at top of 10,500 rows",
+            "file": "xl/AAPL.xlsx",
+            "sheet": 0,
+            "address": "A1",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_range_values,
+            "two": openpyxl_get_range_values,
+        },
+        {
+            "description": "Read cell in row 10,000 of 10,500 rows",
+            "file": "xl/AAPL.xlsx",
+            "sheet": 0,
+            "address": "D10000",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_range_values,
+            "two": openpyxl_get_range_values,
+        },
+        {
+            "description": "Read sheet in small file",
+            "file": "xl/small.xlsx",
+            "sheet": 0,
+            "address": "",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_sheet_values,
+            "two": openpyxl_get_sheet_values,
+        },
+        {
+            "description": "sheet (10,500 rows)",
+            "file": "xl/AAPL.xlsb",
+            "sheet": 0,
+            "address": "",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_sheet_df,
+            "two": pandas_get_sheet_df,
+        },
+        {
+            "description": "top 10 rows from 10.k rows",
+            "file": "xl/AAPL.xlsb",
+            "sheet": 0,
+            "address": "A1:G10",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_range_df,
+            "two": pandas_get_range_df,
+        },
+        {
+            "description": "bottom 10 rows from 10.k rows",
+            "file": "xl/AAPL.xlsb",
+            "sheet": 0,
+            "address": "A10544:G10553",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_range_df,
+            "two": pandas_get_range_df,
+        },
+        {
+            "description": "small file, small df",
+            "file": "xl/small.xlsb",
+            "sheet": 0,
+            "address": "A1:C3",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_range_df,
+            "two": pandas_get_range_df,
+        },
+        {
+            "description": "Read sheet (10,500 rows)",
             "file": "xl/AAPL.xlsb",
             "sheet": 0,
             "address": "",
@@ -296,27 +338,7 @@ if __name__ == "__main__":
             "two": pyxlsb_get_sheet_values,
         },
         {
-            "description": "Read cell at top of 10.5k rows",
-            "file": "xl/AAPL.xls",
-            "sheet": 0,
-            "address": "A1",
-            "repeat": 5,
-            "loops": 10,
-            "one": xlwings_get_range_values,
-            "two": xlrd_get_range_values,
-        },
-        {
-            "description": "Read cell at top of 10.5k rows",
-            "file": "xl/AAPL.xlsx",
-            "sheet": 0,
-            "address": "A1",
-            "repeat": 5,
-            "loops": 10,
-            "one": xlwings_get_range_values,
-            "two": openpyxl_get_range_values,
-        },
-        {
-            "description": "Read cell at top of 10.5k rows",
+            "description": "Read cell at top of 10,500 rows",
             "file": "xl/AAPL.xlsb",
             "sheet": 0,
             "address": "A1",
@@ -326,27 +348,7 @@ if __name__ == "__main__":
             "two": pyxlsb_get_range_values,
         },
         {
-            "description": "Read cell in row 10,000 of 10.5k rows",
-            "file": "xl/AAPL.xls",
-            "sheet": 0,
-            "address": "D10000",
-            "repeat": 5,
-            "loops": 10,
-            "one": xlwings_get_range_values,
-            "two": xlrd_get_range_values,
-        },
-        {
-            "description": "Read cell in row 10,000 of 10.5k rows",
-            "file": "xl/AAPL.xlsx",
-            "sheet": 0,
-            "address": "D10000",
-            "repeat": 5,
-            "loops": 10,
-            "one": xlwings_get_range_values,
-            "two": openpyxl_get_range_values,
-        },
-        {
-            "description": "Read cell in row 10,000 of 10.5k rows [pyxlsb doesn't offer direct cell access]",
+            "description": "Read cell in row 10,000 of 10,500 rows",
             "file": "xl/AAPL.xlsb",
             "sheet": 0,
             "address": "D10000",
@@ -354,6 +356,46 @@ if __name__ == "__main__":
             "loops": 10,
             "one": xlwings_get_range_values,
             "two": pyxlsb_get_range_values,
+        },
+        {
+            "description": "Read sheet in small file",
+            "file": "xl/small.xlsb",
+            "sheet": 0,
+            "address": "",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_sheet_values,
+            "two": pyxlsb_get_sheet_values,
+        },
+        {
+            "description": "Read sheet (10,500 rows)",
+            "file": "xl/AAPL.xls",
+            "sheet": 0,
+            "address": "",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_sheet_values,
+            "two": xlrd_get_sheet_values,
+        },
+        {
+            "description": "Read cell at top of 10,500 rows",
+            "file": "xl/AAPL.xls",
+            "sheet": 0,
+            "address": "A1",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_range_values,
+            "two": xlrd_get_range_values,
+        },
+        {
+            "description": "Read cell in row 10,000 of 10,500 rows",
+            "file": "xl/AAPL.xls",
+            "sheet": 0,
+            "address": "D10000",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_range_values,
+            "two": xlrd_get_range_values,
         },
         {
             "description": "Read sheet in small file",
@@ -364,26 +406,6 @@ if __name__ == "__main__":
             "loops": 10,
             "one": xlwings_get_sheet_values,
             "two": xlrd_get_sheet_values,
-        },
-        {
-            "description": "Read sheet in small file",
-            "file": "xl/small.xlsx",
-            "sheet": 0,
-            "address": "",
-            "repeat": 5,
-            "loops": 10,
-            "one": xlwings_get_sheet_values,
-            "two": openpyxl_get_sheet_values,
-        },
-        {
-            "description": "Read sheet in small file",
-            "file": "xl/small.xlsb",
-            "sheet": 0,
-            "address": "",
-            "repeat": 5,
-            "loops": 10,
-            "one": xlwings_get_sheet_values,
-            "two": pyxlsb_get_sheet_values,
         },
     )
 

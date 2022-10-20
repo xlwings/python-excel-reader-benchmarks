@@ -1,0 +1,232 @@
+Python: 3.10.6
+xlwings: 0.28.3
+OpenPyXL: 3.0.10
+pyxlsb: 1.0.10
+xlrd: 2.0.1
+pandas: 1.5.1
+
+Available Memory: 5.5G
+CPUs: 12
+Platform: darwin
+Processor: i386
+
+================================================================================
+[xlsx|pandas] sheet (10,500 rows)
+================================================================================
+xlwings_get_sheet_df vs. pandas_get_sheet_df
+File: xl/AAPL.xlsx, Sheet: 0, Address: full sheet, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.084s
+pandas: 0.692s
+Speedup xlwings vs. pandas: 8.2x
+================================================================================
+
+================================================================================
+[xlsx|pandas] top 10 rows from 10.k rows
+================================================================================
+xlwings_get_range_df vs. pandas_get_range_df
+File: xl/AAPL.xlsx, Sheet: 0, Address: A1:G10, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.072s
+pandas: 0.014s
+Speedup xlwings vs. pandas: 0.2x
+================================================================================
+
+================================================================================
+[xlsx|pandas] bottom 10 rows from 10.k rows
+================================================================================
+xlwings_get_range_df vs. pandas_get_range_df
+File: xl/AAPL.xlsx, Sheet: 0, Address: A10544:G10553, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.072s
+pandas: 0.698s
+Speedup xlwings vs. pandas: 9.7x
+================================================================================
+
+================================================================================
+[xlsx|pandas] small file, small df
+================================================================================
+xlwings_get_range_df vs. pandas_get_range_df
+File: xl/small.xlsx, Sheet: 0, Address: A1:C3, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.001s
+pandas: 0.005s
+Speedup xlwings vs. pandas: 5.7x
+================================================================================
+
+================================================================================
+[xlsx|openpyxl] Read sheet (10,500 rows)
+================================================================================
+xlwings_get_sheet_values vs. openpyxl_get_sheet_values
+File: xl/AAPL.xlsx, Sheet: 0, Address: full sheet, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.078s
+openpyxl: 0.519s
+Speedup xlwings vs. openpyxl: 6.7x
+================================================================================
+
+================================================================================
+[xlsx|openpyxl] Read cell at top of 10,500 rows
+================================================================================
+xlwings_get_range_values vs. openpyxl_get_range_values
+File: xl/AAPL.xlsx, Sheet: 0, Address: A1, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.070s
+openpyxl: 0.012s
+Speedup xlwings vs. openpyxl: 0.2x
+================================================================================
+
+================================================================================
+[xlsx|openpyxl] Read cell in row 10,000 of 10,500 rows
+================================================================================
+xlwings_get_range_values vs. openpyxl_get_range_values
+File: xl/AAPL.xlsx, Sheet: 0, Address: D10000, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.072s
+openpyxl: 0.473s
+Speedup xlwings vs. openpyxl: 6.6x
+================================================================================
+
+================================================================================
+[xlsx|openpyxl] Read sheet in small file
+================================================================================
+xlwings_get_sheet_values vs. openpyxl_get_sheet_values
+File: xl/small.xlsx, Sheet: 0, Address: full sheet, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.001s
+openpyxl: 0.004s
+Speedup xlwings vs. openpyxl: 5.3x
+================================================================================
+
+================================================================================
+[xlsb|pandas] sheet (10,500 rows)
+================================================================================
+xlwings_get_sheet_df vs. pandas_get_sheet_df
+File: xl/AAPL.xlsb, Sheet: 0, Address: full sheet, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.018s
+pandas: 0.564s
+Speedup xlwings vs. pandas: 31.3x
+================================================================================
+
+================================================================================
+[xlsb|pandas] top 10 rows from 10.k rows
+================================================================================
+xlwings_get_range_df vs. pandas_get_range_df
+File: xl/AAPL.xlsb, Sheet: 0, Address: A1:G10, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.007s
+pandas: 0.010s
+Speedup xlwings vs. pandas: 1.5x
+================================================================================
+
+================================================================================
+[xlsb|pandas] bottom 10 rows from 10.k rows
+================================================================================
+xlwings_get_range_df vs. pandas_get_range_df
+File: xl/AAPL.xlsb, Sheet: 0, Address: A10544:G10553, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.007s
+pandas: 0.567s
+Speedup xlwings vs. pandas: 85.7x
+================================================================================
+
+================================================================================
+[xlsb|pandas] small file, small df
+================================================================================
+xlwings_get_range_df vs. pandas_get_range_df
+File: xl/small.xlsb, Sheet: 0, Address: A1:C3, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.001s
+pandas: 0.003s
+Speedup xlwings vs. pandas: 4.4x
+================================================================================
+
+================================================================================
+[xlsb|pyxlsb] Read sheet (10,500 rows)
+================================================================================
+xlwings_get_sheet_values vs. pyxlsb_get_sheet_values
+File: xl/AAPL.xlsb, Sheet: 0, Address: full sheet, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.015s
+pyxlsb: 0.520s
+Speedup xlwings vs. pyxlsb: 35.3x
+================================================================================
+
+================================================================================
+[xlsb|pyxlsb] Read cell at top of 10,500 rows
+================================================================================
+xlwings_get_range_values vs. pyxlsb_get_range_values
+File: xl/AAPL.xlsb, Sheet: 0, Address: A1, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.007s
+pyxlsb: 0.007s
+Speedup xlwings vs. pyxlsb: 1.1x
+================================================================================
+
+================================================================================
+[xlsb|pyxlsb] Read cell in row 10,000 of 10,500 rows
+================================================================================
+xlwings_get_range_values vs. pyxlsb_get_range_values
+File: xl/AAPL.xlsb, Sheet: 0, Address: D10000, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.006s
+pyxlsb: 0.480s
+Speedup xlwings vs. pyxlsb: 75.1x
+================================================================================
+
+================================================================================
+[xlsb|pyxlsb] Read sheet in small file
+================================================================================
+xlwings_get_sheet_values vs. pyxlsb_get_sheet_values
+File: xl/small.xlsb, Sheet: 0, Address: full sheet, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.001s
+pyxlsb: 0.002s
+Speedup xlwings vs. pyxlsb: 3.4x
+================================================================================
+
+================================================================================
+[xls|xlrd] Read sheet (10,500 rows)
+================================================================================
+xlwings_get_sheet_values vs. xlrd_get_sheet_values
+File: xl/AAPL.xls, Sheet: 0, Address: full sheet, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.019s
+xlrd: 0.129s
+Speedup xlwings vs. xlrd: 6.7x
+================================================================================
+
+================================================================================
+[xls|xlrd] Read cell at top of 10,500 rows
+================================================================================
+xlwings_get_range_values vs. xlrd_get_range_values
+File: xl/AAPL.xls, Sheet: 0, Address: A1, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.010s
+xlrd: 0.125s
+Speedup xlwings vs. xlrd: 12.7x
+================================================================================
+
+================================================================================
+[xls|xlrd] Read cell in row 10,000 of 10,500 rows
+================================================================================
+xlwings_get_range_values vs. xlrd_get_range_values
+File: xl/AAPL.xls, Sheet: 0, Address: D10000, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.014s
+xlrd: 0.126s
+Speedup xlwings vs. xlrd: 9.2x
+================================================================================
+
+================================================================================
+[xls|xlrd] Read sheet in small file
+================================================================================
+xlwings_get_sheet_values vs. xlrd_get_sheet_values
+File: xl/small.xls, Sheet: 0, Address: full sheet, Repeat: 5, Loops: 10
+                                                                                
+xlwings: 0.000s
+xlrd: 0.001s
+Speedup xlwings vs. xlrd: 5.2x
+================================================================================
+

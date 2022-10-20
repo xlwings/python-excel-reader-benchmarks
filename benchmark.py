@@ -163,7 +163,7 @@ if __name__ == "__main__":
     test_cases = (
         {
             "description": "Read sheet (10.5k rows)",
-            "file": "AAPL.xls",
+            "file": "xl/AAPL.xls",
             "sheet": 0,
             "address": "",
             "repeat": 5,
@@ -173,7 +173,7 @@ if __name__ == "__main__":
         },
         {
             "description": "Read sheet (10.5k rows)",
-            "file": "AAPL.xlsx",
+            "file": "xl/AAPL.xlsx",
             "sheet": 0,
             "address": "",
             "repeat": 5,
@@ -183,7 +183,7 @@ if __name__ == "__main__":
         },
         {
             "description": "Read sheet (10.5k rows)",
-            "file": "AAPL.xlsb",
+            "file": "xl/AAPL.xlsb",
             "sheet": 0,
             "address": "",
             "repeat": 5,
@@ -193,7 +193,7 @@ if __name__ == "__main__":
         },
         {
             "description": "Read cell at top of 10.5k rows",
-            "file": "AAPL.xls",
+            "file": "xl/AAPL.xls",
             "sheet": 0,
             "address": "A1",
             "repeat": 5,
@@ -203,7 +203,7 @@ if __name__ == "__main__":
         },
         {
             "description": "Read cell at top of 10.5k rows",
-            "file": "AAPL.xlsx",
+            "file": "xl/AAPL.xlsx",
             "sheet": 0,
             "address": "A1",
             "repeat": 5,
@@ -213,7 +213,7 @@ if __name__ == "__main__":
         },
         {
             "description": "Read cell at top of 10.5k rows",
-            "file": "AAPL.xlsb",
+            "file": "xl/AAPL.xlsb",
             "sheet": 0,
             "address": "A1",
             "repeat": 5,
@@ -223,7 +223,7 @@ if __name__ == "__main__":
         },
         {
             "description": "Read cell in row 10,000 of 10.5k rows",
-            "file": "AAPL.xls",
+            "file": "xl/AAPL.xls",
             "sheet": 0,
             "address": "D10000",
             "repeat": 5,
@@ -233,7 +233,7 @@ if __name__ == "__main__":
         },
         {
             "description": "Read cell in row 10,000 of 10.5k rows",
-            "file": "AAPL.xlsx",
+            "file": "xl/AAPL.xlsx",
             "sheet": 0,
             "address": "D10000",
             "repeat": 5,
@@ -243,7 +243,7 @@ if __name__ == "__main__":
         },
         {
             "description": "Read cell in row 10,000 of 10.5k rows [pyxlsb doesn't offer direct cell access]",
-            "file": "AAPL.xlsb",
+            "file": "xl/AAPL.xlsb",
             "sheet": 0,
             "address": "D10000",
             "repeat": 5,
@@ -253,7 +253,7 @@ if __name__ == "__main__":
         },
         {
             "description": "Read sheet in small file",
-            "file": "small.xls",
+            "file": "xl/small.xls",
             "sheet": 0,
             "address": "",
             "repeat": 5,
@@ -263,7 +263,7 @@ if __name__ == "__main__":
         },
         {
             "description": "Read sheet in small file",
-            "file": "small.xlsx",
+            "file": "xl/small.xlsx",
             "sheet": 0,
             "address": "",
             "repeat": 5,
@@ -273,7 +273,7 @@ if __name__ == "__main__":
         },
         {
             "description": "Read sheet in small file",
-            "file": "small.xlsb",
+            "file": "xl/small.xlsb",
             "sheet": 0,
             "address": "",
             "repeat": 5,

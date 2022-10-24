@@ -34,7 +34,9 @@ def xlwings_get_sheet_df():
 
 def xlwings_get_range_df():
     with xw.Book(TEST_FILE, mode="r") as book:
-        return book.sheets[SHEET][ADDRESS].options("df", index=False, header=False).value
+        return (
+            book.sheets[SHEET][ADDRESS].options("df", index=False, header=False).value
+        )
 
 
 # pandas
@@ -59,10 +61,7 @@ def openpyxl_get_sheet_values():
         TEST_FILE, read_only=True, keep_links=False, data_only=True
     )
     sheet = book.worksheets[SHEET]
-    values = []
-    for row in sheet.iter_rows(values_only=True):
-        values.append(row)
-    return values
+    return [row for row in sheet.iter_rows(values_only=True)]
 
 
 def openpyxl_get_range_values():
@@ -70,31 +69,28 @@ def openpyxl_get_range_values():
         TEST_FILE, read_only=True, keep_links=False, data_only=True
     )
     sheet = book.worksheets[SHEET]
-    values = []
-    for row in sheet.iter_rows(
-        min_row=ROW1, max_row=ROW2, min_col=COL1, max_col=COL2, values_only=True
-    ):
-        values.append(row)
-    return values
+    return [
+        row
+        for row in sheet.iter_rows(
+            min_row=ROW1, max_row=ROW2, min_col=COL1, max_col=COL2, values_only=True
+        )
+    ]
 
 
 # pyxlsb
 def pyxlsb_get_sheet_values():
-    values = []
     with pyxlsb.open_workbook(TEST_FILE) as book:
         with book.get_sheet(SHEET + 1) as sheet:
-            for row in sheet.rows():
-                values.append([cell.v for cell in row])
-    return values
+            return [[cell.v for cell in row] for row in sheet.rows()]
 
 
 def pyxlsb_get_range_values():
-    values = []
     with pyxlsb.open_workbook(TEST_FILE) as book:
         with book.get_sheet(SHEET + 1) as sheet:
-            for row in itertools.islice(sheet.rows(), ROW1 - 1, ROW2):
-                values.append([cell.v for cell in row][COL1 - 1 : COL2])
-    return values
+            return [
+                [cell.v for cell in row[COL1 - 1 : COL2]]
+                for row in itertools.islice(sheet.rows(), ROW1 - 1, ROW2)
+            ]
 
 
 # xlrd

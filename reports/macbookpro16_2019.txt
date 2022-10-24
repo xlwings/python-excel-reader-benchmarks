@@ -5,7 +5,7 @@ pyxlsb: 1.0.10
 xlrd: 2.0.1
 pandas: 1.5.1
 
-Available Memory: 5.5G
+Available Memory: 5.1G
 CPUs: 12
 Platform: darwin
 Processor: i386
@@ -16,8 +16,8 @@ Processor: i386
 xlwings_get_sheet_df vs. pandas_get_sheet_df
 File: xl/AAPL.xlsx, Sheet: 0, Address: full sheet, Repeat: 5, Loops: 10
                                                                                 
-xlwings: 0.084s
-pandas: 0.692s
+xlwings: 0.083s
+pandas: 0.683s
 Speedup xlwings vs. pandas: 8.2x
 ================================================================================
 
@@ -27,7 +27,7 @@ Speedup xlwings vs. pandas: 8.2x
 xlwings_get_range_df vs. pandas_get_range_df
 File: xl/AAPL.xlsx, Sheet: 0, Address: A1:G10, Repeat: 5, Loops: 10
                                                                                 
-xlwings: 0.072s
+xlwings: 0.071s
 pandas: 0.014s
 Speedup xlwings vs. pandas: 0.2x
 ================================================================================
@@ -38,9 +38,9 @@ Speedup xlwings vs. pandas: 0.2x
 xlwings_get_range_df vs. pandas_get_range_df
 File: xl/AAPL.xlsx, Sheet: 0, Address: A10544:G10553, Repeat: 5, Loops: 10
                                                                                 
-xlwings: 0.072s
-pandas: 0.698s
-Speedup xlwings vs. pandas: 9.7x
+xlwings: 0.074s
+pandas: 0.702s
+Speedup xlwings vs. pandas: 9.5x
 ================================================================================
 
 ================================================================================
@@ -50,8 +50,8 @@ xlwings_get_range_df vs. pandas_get_range_df
 File: xl/small.xlsx, Sheet: 0, Address: A1:C3, Repeat: 5, Loops: 10
                                                                                 
 xlwings: 0.001s
-pandas: 0.005s
-Speedup xlwings vs. pandas: 5.7x
+pandas: 0.006s
+Speedup xlwings vs. pandas: 6.8x
 ================================================================================
 
 ================================================================================
@@ -60,9 +60,9 @@ Speedup xlwings vs. pandas: 5.7x
 xlwings_get_sheet_values vs. openpyxl_get_sheet_values
 File: xl/AAPL.xlsx, Sheet: 0, Address: full sheet, Repeat: 5, Loops: 10
                                                                                 
-xlwings: 0.078s
-openpyxl: 0.519s
-Speedup xlwings vs. openpyxl: 6.7x
+xlwings: 0.080s
+openpyxl: 0.526s
+Speedup xlwings vs. openpyxl: 6.6x
 ================================================================================
 
 ================================================================================
@@ -71,8 +71,8 @@ Speedup xlwings vs. openpyxl: 6.7x
 xlwings_get_range_values vs. openpyxl_get_range_values
 File: xl/AAPL.xlsx, Sheet: 0, Address: A1, Repeat: 5, Loops: 10
                                                                                 
-xlwings: 0.070s
-openpyxl: 0.012s
+xlwings: 0.072s
+openpyxl: 0.013s
 Speedup xlwings vs. openpyxl: 0.2x
 ================================================================================
 
@@ -83,8 +83,8 @@ xlwings_get_range_values vs. openpyxl_get_range_values
 File: xl/AAPL.xlsx, Sheet: 0, Address: D10000, Repeat: 5, Loops: 10
                                                                                 
 xlwings: 0.072s
-openpyxl: 0.473s
-Speedup xlwings vs. openpyxl: 6.6x
+openpyxl: 0.481s
+Speedup xlwings vs. openpyxl: 6.7x
 ================================================================================
 
 ================================================================================
@@ -95,7 +95,7 @@ File: xl/small.xlsx, Sheet: 0, Address: full sheet, Repeat: 5, Loops: 10
                                                                                 
 xlwings: 0.001s
 openpyxl: 0.004s
-Speedup xlwings vs. openpyxl: 5.3x
+Speedup xlwings vs. openpyxl: 5.0x
 ================================================================================
 
 ================================================================================
@@ -105,8 +105,8 @@ xlwings_get_sheet_df vs. pandas_get_sheet_df
 File: xl/AAPL.xlsb, Sheet: 0, Address: full sheet, Repeat: 5, Loops: 10
                                                                                 
 xlwings: 0.018s
-pandas: 0.564s
-Speedup xlwings vs. pandas: 31.3x
+pandas: 0.575s
+Speedup xlwings vs. pandas: 31.4x
 ================================================================================
 
 ================================================================================
@@ -127,8 +127,8 @@ xlwings_get_range_df vs. pandas_get_range_df
 File: xl/AAPL.xlsb, Sheet: 0, Address: A10544:G10553, Repeat: 5, Loops: 10
                                                                                 
 xlwings: 0.007s
-pandas: 0.567s
-Speedup xlwings vs. pandas: 85.7x
+pandas: 0.573s
+Speedup xlwings vs. pandas: 85.8x
 ================================================================================
 
 ================================================================================
@@ -139,7 +139,7 @@ File: xl/small.xlsb, Sheet: 0, Address: A1:C3, Repeat: 5, Loops: 10
                                                                                 
 xlwings: 0.001s
 pandas: 0.003s
-Speedup xlwings vs. pandas: 4.4x
+Speedup xlwings vs. pandas: 4.3x
 ================================================================================
 
 ================================================================================
@@ -148,9 +148,9 @@ Speedup xlwings vs. pandas: 4.4x
 xlwings_get_sheet_values vs. pyxlsb_get_sheet_values
 File: xl/AAPL.xlsb, Sheet: 0, Address: full sheet, Repeat: 5, Loops: 10
                                                                                 
-xlwings: 0.015s
-pyxlsb: 0.520s
-Speedup xlwings vs. pyxlsb: 35.3x
+xlwings: 0.013s
+pyxlsb: 0.545s
+Speedup xlwings vs. pyxlsb: 41.3x
 ================================================================================
 
 ================================================================================
@@ -159,7 +159,7 @@ Speedup xlwings vs. pyxlsb: 35.3x
 xlwings_get_range_values vs. pyxlsb_get_range_values
 File: xl/AAPL.xlsb, Sheet: 0, Address: A1, Repeat: 5, Loops: 10
                                                                                 
-xlwings: 0.007s
+xlwings: 0.006s
 pyxlsb: 0.007s
 Speedup xlwings vs. pyxlsb: 1.1x
 ================================================================================
@@ -170,9 +170,9 @@ Speedup xlwings vs. pyxlsb: 1.1x
 xlwings_get_range_values vs. pyxlsb_get_range_values
 File: xl/AAPL.xlsb, Sheet: 0, Address: D10000, Repeat: 5, Loops: 10
                                                                                 
-xlwings: 0.006s
-pyxlsb: 0.480s
-Speedup xlwings vs. pyxlsb: 75.1x
+xlwings: 0.007s
+pyxlsb: 0.500s
+Speedup xlwings vs. pyxlsb: 74.3x
 ================================================================================
 
 ================================================================================
@@ -183,7 +183,7 @@ File: xl/small.xlsb, Sheet: 0, Address: full sheet, Repeat: 5, Loops: 10
                                                                                 
 xlwings: 0.001s
 pyxlsb: 0.002s
-Speedup xlwings vs. pyxlsb: 3.4x
+Speedup xlwings vs. pyxlsb: 2.9x
 ================================================================================
 
 ================================================================================
@@ -192,9 +192,9 @@ Speedup xlwings vs. pyxlsb: 3.4x
 xlwings_get_sheet_values vs. xlrd_get_sheet_values
 File: xl/AAPL.xls, Sheet: 0, Address: full sheet, Repeat: 5, Loops: 10
                                                                                 
-xlwings: 0.019s
-xlrd: 0.129s
-Speedup xlwings vs. xlrd: 6.7x
+xlwings: 0.020s
+xlrd: 0.142s
+Speedup xlwings vs. xlrd: 7.2x
 ================================================================================
 
 ================================================================================
@@ -203,9 +203,9 @@ Speedup xlwings vs. xlrd: 6.7x
 xlwings_get_range_values vs. xlrd_get_range_values
 File: xl/AAPL.xls, Sheet: 0, Address: A1, Repeat: 5, Loops: 10
                                                                                 
-xlwings: 0.010s
-xlrd: 0.125s
-Speedup xlwings vs. xlrd: 12.7x
+xlwings: 0.023s
+xlrd: 0.151s
+Speedup xlwings vs. xlrd: 6.7x
 ================================================================================
 
 ================================================================================
@@ -214,9 +214,9 @@ Speedup xlwings vs. xlrd: 12.7x
 xlwings_get_range_values vs. xlrd_get_range_values
 File: xl/AAPL.xls, Sheet: 0, Address: D10000, Repeat: 5, Loops: 10
                                                                                 
-xlwings: 0.014s
-xlrd: 0.126s
-Speedup xlwings vs. xlrd: 9.2x
+xlwings: 0.023s
+xlrd: 0.150s
+Speedup xlwings vs. xlrd: 6.4x
 ================================================================================
 
 ================================================================================
@@ -226,7 +226,7 @@ xlwings_get_sheet_values vs. xlrd_get_sheet_values
 File: xl/small.xls, Sheet: 0, Address: full sheet, Repeat: 5, Loops: 10
                                                                                 
 xlwings: 0.000s
-xlrd: 0.001s
-Speedup xlwings vs. xlrd: 5.2x
+xlrd: 0.002s
+Speedup xlwings vs. xlrd: 5.5x
 ================================================================================
 

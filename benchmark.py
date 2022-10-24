@@ -39,6 +39,11 @@ def xlwings_get_range_df():
         )
 
 
+def xlwings_get_sheet_names():
+    with xw.Book(TEST_FILE, mode="r") as book:
+        return book.sheet_names
+
+
 # pandas
 def pandas_get_sheet_df():
     return pd.read_excel(TEST_FILE, sheet_name=SHEET)
@@ -53,6 +58,11 @@ def pandas_get_range_df():
         nrows=ROW2 - ROW1 + 1,
         header=None,
     )
+
+
+def pandas_get_sheet_names():
+    xl = pd.ExcelFile(TEST_FILE)
+    return xl.sheet_names
 
 
 # openpyxl
@@ -77,6 +87,13 @@ def openpyxl_get_range_values():
     ]
 
 
+def openpyxl_get_sheet_names():
+    book = openpyxl.load_workbook(
+        TEST_FILE, read_only=True, keep_links=False, data_only=True
+    )
+    return book.sheetnames
+
+
 # pyxlsb
 def pyxlsb_get_sheet_values():
     with pyxlsb.open_workbook(TEST_FILE) as book:
@@ -91,6 +108,10 @@ def pyxlsb_get_range_values():
                 [cell.v for cell in row[COL1 - 1 : COL2]]
                 for row in itertools.islice(sheet.rows(), ROW1 - 1, ROW2)
             ]
+
+def pyxlsb_get_sheet_names():
+    with pyxlsb.open_workbook(TEST_FILE) as book:
+        return book.sheets
 
 
 # xlrd
@@ -108,6 +129,9 @@ def xlrd_get_range_values():
             for row in range(ROW1 - 1, ROW2)
         ]
 
+def xlrd_get_sheet_names():
+    with xlrd.open_workbook(TEST_FILE, on_demand=True) as book:
+        return book.sheet_names()
 
 def compare(func_one, func_two):
     one = func_one()
@@ -117,7 +141,11 @@ def compare(func_one, func_two):
         raise Exception("You're comparing different functions!")
 
     if isinstance(one, list) and not isinstance(one[0], list):
-        raise Exception("Only single cells or 2d ranges are supported for address!")
+        # list of named ranges
+        if one == two:
+            return
+        else:
+            raise Exception(f"Values are different: {one} vs. {two}")
 
     # DataFrame
     if isinstance(one, pd.DataFrame):
@@ -244,6 +272,16 @@ if __name__ == "__main__":
             "two": pandas_get_range_df,
         },
         {
+            "description": "get sheet names",
+            "file": "xl/AAPL.xlsx",
+            "sheet": 0,
+            "address": "",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_sheet_names,
+            "two": pandas_get_sheet_names,
+        },
+        {
             "description": "Read sheet (10,500 rows)",
             "file": "xl/AAPL.xlsx",
             "sheet": 0,
@@ -282,6 +320,16 @@ if __name__ == "__main__":
             "loops": 10,
             "one": xlwings_get_sheet_values,
             "two": openpyxl_get_sheet_values,
+        },
+        {
+            "description": "get sheet names",
+            "file": "xl/AAPL.xlsx",
+            "sheet": 0,
+            "address": "",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_sheet_names,
+            "two": openpyxl_get_sheet_names,
         },
         {
             "description": "sheet (10,500 rows)",
@@ -324,6 +372,16 @@ if __name__ == "__main__":
             "two": pandas_get_range_df,
         },
         {
+            "description": "get sheet names",
+            "file": "xl/AAPL.xlsb",
+            "sheet": 0,
+            "address": "",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_sheet_names,
+            "two": pandas_get_sheet_names,
+        },
+        {
             "description": "Read sheet (10,500 rows)",
             "file": "xl/AAPL.xlsb",
             "sheet": 0,
@@ -364,6 +422,16 @@ if __name__ == "__main__":
             "two": pyxlsb_get_sheet_values,
         },
         {
+            "description": "get sheet names",
+            "file": "xl/AAPL.xlsb",
+            "sheet": 0,
+            "address": "",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_sheet_names,
+            "two": pyxlsb_get_sheet_names,
+        },
+        {
             "description": "Read sheet (10,500 rows)",
             "file": "xl/AAPL.xls",
             "sheet": 0,
@@ -402,6 +470,16 @@ if __name__ == "__main__":
             "loops": 10,
             "one": xlwings_get_sheet_values,
             "two": xlrd_get_sheet_values,
+        },
+        {
+            "description": "get sheet names",
+            "file": "xl/AAPL.xls",
+            "sheet": 0,
+            "address": "",
+            "repeat": 5,
+            "loops": 10,
+            "one": xlwings_get_sheet_names,
+            "two": xlrd_get_sheet_names,
         },
     )
 

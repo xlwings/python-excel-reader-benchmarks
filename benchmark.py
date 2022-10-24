@@ -141,7 +141,7 @@ def compare(func_one, func_two):
         raise Exception("You're comparing different functions!")
 
     if isinstance(one, list) and not isinstance(one[0], list):
-        # list of named ranges
+        # E.g., list of sheet names
         if one == two:
             return
         else:

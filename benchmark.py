@@ -71,7 +71,7 @@ def openpyxl_get_sheet_values():
         TEST_FILE, read_only=True, keep_links=False, data_only=True
     )
     sheet = book.worksheets[SHEET]
-    return [row for row in sheet.iter_rows(values_only=True)]
+    return list(sheet.values)
 
 
 def openpyxl_get_range_values():
